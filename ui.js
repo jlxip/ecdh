@@ -1,7 +1,8 @@
 "use strict";
 
-const ec = new elliptic.ec('curve25519');
-var key = null;
+// This file contains all the javascript that's not directly crypto
+// That is, code that cannot go wrong
+// This includes handling the local storage
 
 function derive() {
     const secretname = $('#secretname')[0].value;
@@ -21,15 +22,7 @@ function derive() {
         return;
     }
 
-    let other;
-    try {
-        other = ec.keyFromPublic(otherpubkey, 'hex').getPublic();
-    } catch(e) {
-        alert('Invalid key.');
-        return;
-    }
-
-    const secret = key.derive(other).toString(16);
+    const secret = CRYPTO.KEX.derive(otherpubkey);
     localStorage.setItem('S'+secretname, secret);
     updateSecrets();
     $('#secretname')[0].value = '';
@@ -63,65 +56,33 @@ function updateSecrets() {
 function getAES() {
     const name = $('select')[0].value;
     const hex = localStorage.getItem('S'+name);
-    if(!hex) {
-        alert('Something went awfully wrong.');
-        return false;
-    }
-    const key = sjcl.codec.hex.toBits(hex);
-    return new sjcl.cipher.aes(key);
+    if(!hex)
+        throw new Error('Something went awfully wrong.');
+    return CRYPTO.AE.getAES(hex);
 }
-
-const IV_WORDS = 3; // 3 words * 4 bytes/word * 8 bits/byte = 96 bits
 
 function encrypt() {
     const aes = getAES();
-    if(!aes) return;
-
-    const contents = sjcl.codec.utf8String.toBits($('#input')[0].value);
-    const iv = sjcl.random.randomWords(IV_WORDS);
-    const enc = sjcl.mode.gcm.encrypt(aes, contents, iv);
-    const both = iv.concat(enc);
-    const ret = sjcl.codec.base64.fromBits(both);
-
-    $('#output').text(ret);
+    const contents = $('#input')[0].value;
+    const enc = CRYPTO.AE.encrypt(aes, contents);
+    $('#output').text(enc);
 }
 
 function decrypt() {
     const aes = getAES();
-    if(!aes) return;
-
-    let contents;
-    try {
-        contents = sjcl.codec.base64.toBits($('#input')[0].value);
-    } catch(e) {
-        alert('Input is not base64.');
-        return;
-    }
-
-    const iv = contents.slice(0, IV_WORDS);
-    const enc = contents.slice(IV_WORDS);
-
-    let dec;
-    try {
-        dec = sjcl.mode.gcm.decrypt(aes, enc, iv);
-    } catch(e) {
-        alert('Error decrypting.');
-        return;
-    }
-
-    const ret = sjcl.codec.utf8String.fromBits(dec);
-
-    $('#output').text(ret);
+    const encoded = $('#input')[0].value;
+    const dec = CRYPTO.AE.decrypt(aes, encoded);
+    $('#output').text(dec);
 }
 
 $(document).ready(() => {
     // Generate a key pair if it's not there.
     if(!localStorage.getItem('pub')) {
-        key = ec.genKeyPair();
-        localStorage.setItem('pub', key.getPublic('hex'));
-        localStorage.setItem('priv', key.getPrivate('hex'));
+        let pub, priv = CRYPTO.KEX.genKeyPair();
+        localStorage.setItem('pub', pub);
+        localStorage.setItem('priv', priv);
     } else {
-        key = ec.keyFromPrivate(localStorage.getItem('priv'));
+        CRYPTO.KEX.restoreKey(localStorage.getItem('priv'));
     }
     $('#mypubkey').text(localStorage.getItem('pub'));
 
