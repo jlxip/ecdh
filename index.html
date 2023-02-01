@@ -1,139 +1,139 @@
 <!DOCTYPE HTML>
 
 <HTML>
-	<head>
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Simple ECDH</title>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Simple ECDH</title>
 
-		<script
-			  src="https://code.jquery.com/jquery-3.5.1.min.js"
-			  integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
-			  crossorigin="anonymous"></script>
-		<script src="https://cdn.jsdelivr.net/gh/indutny/elliptic/dist/elliptic.min.js"></script>
-		<script src="js.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/sjcl/1.0.8/sjcl.min.js"></script>
-		<script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js"></script>
+        <script
+              src="https://code.jquery.com/jquery-3.5.1.min.js"
+              integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
+              crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/gh/indutny/elliptic/dist/elliptic.min.js"></script>
+        <script src="js.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/sjcl/1.0.8/sjcl.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js"></script>
 
-		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
-		<link rel="stylesheet" href="style.css">
-	</head>
-	<body>
-		<h1 class="text-center">Simple ECDH</h1>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <h1 class="text-center">Simple ECDH</h1>
 
-		<hr>
+        <hr>
 
-		<h2 class="ml-3">Introduction</h2>
-		<div class="m-3">
-			<p class="text-justify">
-				Congratulations, you have arrived at Simple ECDH.
-				You're here because the person who sent you this link (let's call her Alice)
-				wants to communicate securely with you (Bob).<br><br>
+        <h2 class="ml-3">Introduction</h2>
+        <div class="m-3">
+            <p class="text-justify">
+                Congratulations, you have arrived at Simple ECDH.
+                You're here because the person who sent you this link (let's call her Alice)
+                wants to communicate securely with you (Bob).<br><br>
 
-				Alice does not trust the channel you're currently chatting on.
-				WhatsApp, Telegram, Facebook, Tinder, Instagram, Twitter: the companies that own
-				these chats are able to, at any point, intercept the messages that are sent back
-				and forth in the chat. This doesn't mean that they're doing it right now, but
-				Alice feels like the subject she wants to talk to you is private enough so the
-				information cannot be known by a third party.<br><br>
+                Alice does not trust the channel you're currently chatting on.
+                WhatsApp, Telegram, Facebook, Tinder, Instagram, Twitter: the companies that own
+                these chats are able to, at any point, intercept the messages that are sent back
+                and forth in the chat. This doesn't mean that they're doing it right now, but
+                Alice feels like the subject she wants to talk to you is private enough so the
+                information cannot be known by a third party.<br><br>
 
-				With ECDH, you can start a secure communication in a non-secure channel.
-				This applies to channels such as the listed above, where snooping is likely, but
-				it is assumed that no tampering takes place.<br><br>
+                With ECDH, you can start a secure communication in a non-secure channel.
+                This applies to channels such as the listed above, where snooping is likely, but
+                it is assumed that no tampering takes place.<br><br>
 
-				To begin, a key exchange has to take place. Alice (the other party) generates a key,
-				and Bob (you) does the same. Both share their keys on the channel and
-				copy/paste them in the field below. Once that's done, Alice and Bob can derive
-				a shared key with which they can encrypt and decrypt messages which can be safely
-				sent throught the unsecure channel.<br><br>
+                To begin, a key exchange has to take place. Alice (the other party) generates a key,
+                and Bob (you) does the same. Both share their keys on the channel and
+                copy/paste them in the field below. Once that's done, Alice and Bob can derive
+                a shared key with which they can encrypt and decrypt messages which can be safely
+                sent throught the unsecure channel.<br><br>
 
-				Please do keep in mind that this platform should not be used extensively for day
-				to day communication, only during brief chat sessions; for instance, to figure out
-				a more secure place to talk.
-			</p>
-		</div>
+                Please do keep in mind that this platform should not be used extensively for day
+                to day communication, only during brief chat sessions; for instance, to figure out
+                a more secure place to talk.
+            </p>
+        </div>
 
-		<hr>
+        <hr>
 
-		<h2 class="ml-3">Key Exchange</h2>
-		<div id="kex">
-			<div id="generation" class="ml-3">
-				<h3>Your public key</h3>
-				<p>
-					In order to begin the key exchange, the parties must share their public keys with each other.<br>
-					The one below was generated the first time you loaded this site, and it's stored in your browser local storage; it won't be lost if you close the window or reboot your computer.
-				</p>
+        <h2 class="ml-3">Key Exchange</h2>
+        <div id="kex">
+            <div id="generation" class="ml-3">
+                <h3>Your public key</h3>
+                <p>
+                    In order to begin the key exchange, the parties must share their public keys with each other.<br>
+                    The one below was generated the first time you loaded this site, and it's stored in your browser local storage; it won't be lost if you close the window or reboot your computer.
+                </p>
 
-				<span id="mypubkey" class="text-monospace"></span>
-				<button id="copypub" data-clipboard-target="#mypubkey" class="btn btn-light">
-					<!-- Stealing assets over here. -->
-					<img src="https://clipboardjs.com/assets/images/clippy.svg" alt="Copy to clipboard" width="13">
-				</button>
-			</div>
-			<div id="reception" class="ml-3">
-				<h3>Key derivation</h3>
-				<p>Once you have shared your public key, paste the other party's below and give the resulting key a name, so you can identify the communication later.</p>
-				<div class="row m-2">
-					<div>
-						<input class="m-1" type="text" id="secretname" placeholder="Give it a name."><br>
-						<input class="m-1" type="text" id="otherpubkey" placeholder="Public key goes here."><br>
-						<button id="derive" class="m-1 btn btn-primary">Derive key</button>
-					</div>
-				</div>
-			</div>
-		</div>
+                <span id="mypubkey" class="text-monospace"></span>
+                <button id="copypub" data-clipboard-target="#mypubkey" class="btn btn-light">
+                    <!-- Stealing assets over here. -->
+                    <img src="https://clipboardjs.com/assets/images/clippy.svg" alt="Copy to clipboard" width="13">
+                </button>
+            </div>
+            <div id="reception" class="ml-3">
+                <h3>Key derivation</h3>
+                <p>Once you have shared your public key, paste the other party's below and give the resulting key a name, so you can identify the communication later.</p>
+                <div class="row m-2">
+                    <div>
+                        <input class="m-1" type="text" id="secretname" placeholder="Give it a name."><br>
+                        <input class="m-1" type="text" id="otherpubkey" placeholder="Public key goes here."><br>
+                        <button id="derive" class="m-1 btn btn-primary">Derive key</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-		<hr>
+        <hr>
 
-		<h2 class="ml-3">Encryption/Decryption</h2>
-		<div class="ml-3">
-			<p>
-				Select the key from the list and you can start encrypting and decrypting messages.
-			</p>
+        <h2 class="ml-3">Encryption/Decryption</h2>
+        <div class="ml-3">
+            <p>
+                Select the key from the list and you can start encrypting and decrypting messages.
+            </p>
 
-			<div id="outencdec" class="text-center">
-				<div class="d-float m-3">
-					<select multiple class="mb-2"></select>
+            <div id="outencdec" class="text-center">
+                <div class="d-float m-3">
+                    <select multiple class="mb-2"></select>
 
-					<div id="encdec">
-						<textarea id="input" rows="6"></textarea>
+                    <div id="encdec">
+                        <textarea id="input" rows="6"></textarea>
 
-						<div class="p-2 text-center">
-							<button id="encrypt" class="btn btn-primary">Encrypt</button>
-							<button id="decrypt" class="btn btn-primary">Decrypt</button>
-						</div>
+                        <div class="p-2 text-center">
+                            <button id="encrypt" class="btn btn-primary">Encrypt</button>
+                            <button id="decrypt" class="btn btn-primary">Decrypt</button>
+                        </div>
 
-						<textarea id="output" rows="6" readonly></textarea>
+                        <textarea id="output" rows="6" readonly></textarea>
 
-						<div class="text-center mt-1">
-							<button id="copyresult" data-clipboard-target="#output" class="btn btn-success">Copy to clipboard</button>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
+                        <div class="text-center mt-1">
+                            <button id="copyresult" data-clipboard-target="#output" class="btn btn-success">Copy to clipboard</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-		<hr>
+        <hr>
 
-		<!--<h2>Danger zone</h2>
-		<button id="destroy">Destroy your key pair</button>
-		<button id="save">Save local data</button>
+        <!--<h2>Danger zone</h2>
+        <button id="destroy">Destroy your key pair</button>
+        <button id="save">Save local data</button>
 
-		<hr>-->
+        <hr>-->
 
-		<h2 class="ml-3">For the savvy</h2>
-		<div class="m-3">
-			<p class="text-justify">
-				Please do check <a href="https://github.com/jlxip/ecdh">the code</a> to make sure nothing is sent over the wire. It's very short.<br>
-				Key exchange is performed with ECDH on the curve curve25519, by djb. Advice taken from <a href="https://safecurves.cr.yp.to/index.html">safecurves</a>. Implementation uses <a href="https://github.com/indutny/elliptic">elliptic</a>.<br>
-				Symmetric encryption is performed with AES-256-GCM. IV (96 bits) is randomly generated and sent on each message. Implementation uses <a href="https://github.com/bitwiseshiftleft/sjcl">sjcl</a>.
-			</p>
-		</div>
+        <h2 class="ml-3">For the savvy</h2>
+        <div class="m-3">
+            <p class="text-justify">
+                Please do check <a href="https://github.com/jlxip/ecdh">the code</a> to make sure nothing is sent over the wire. It's very short.<br>
+                Key exchange is performed with ECDH on the curve curve25519, by djb. Advice taken from <a href="https://safecurves.cr.yp.to/index.html">safecurves</a>. Implementation uses <a href="https://github.com/indutny/elliptic">elliptic</a>.<br>
+                Symmetric encryption is performed with AES-256-GCM. IV (96 bits) is randomly generated and sent on each message. Implementation uses <a href="https://github.com/bitwiseshiftleft/sjcl">sjcl</a>.
+            </p>
+        </div>
 
-		<hr>
+        <hr>
 
-		<p class="text-center">
-			Simple ECDH by <a href="https://jlxip.net">jlxip</a> under public domain</a>
-		</p>
-	</body>
+        <p class="text-center">
+            Simple ECDH by <a href="https://jlxip.net">jlxip</a> under public domain</a>
+        </p>
+    </body>
 </HTML>

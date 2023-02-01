@@ -11,4 +11,4 @@ I made this circa October 1st, 2020. This was originally at [https://jlxip.net/e
 - Simplifies a tiny bit my server
 - Might come in handy for someone who wants to have a look at the code
 
-Since the amount of code here is laughable (~150 js lines), this is public domain.
+Since the amount of code here is laughable, this is public domain.
