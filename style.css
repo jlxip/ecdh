@@ -1,0 +1,12 @@
+span#mypubkey {
+	overflow-wrap: break-word;
+}
+
+textarea {
+	width: 100%;
+	max-width: 100%;
+}
+
+select {
+	width: 100%;
+}
