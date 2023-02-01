@@ -2,7 +2,7 @@
 
 Sometimes I want to communicate with others in a secure way over an insecure channel. PGP is absolutely great, but there are some scenarios in which I'd rather use something quick and dirty, so I wrote Simple ECDH for this.
 
-[Click here](https://ecdh.jlxip.net)
+[Click here](https://jlxip.github.io/ecdh)
 
 I made this circa October 1st, 2020. This was originally at [https://jlxip.net/ecdh](https://jlxip.net/ecdh), which makes no sense since it works statically in the browser. Having it in GitHub:
 
