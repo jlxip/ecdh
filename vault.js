@@ -58,5 +58,11 @@ var VAULT = {
             }
         }
         return ret;
+    },
+
+
+
+    panic: function() {
+        localStorage.clear();
     }
 };

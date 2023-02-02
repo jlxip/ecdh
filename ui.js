@@ -64,11 +64,13 @@ $(document).ready(() => {
         CRYPTO.KEX.restoreKey(VAULT.getPriv());
     }
 
-    const yourlink = window.location.href.split('?')[0] +
-          "?key="+VAULT.getPub();
+    // Generate your link
+    const baselink = window.location.href.split('?')[0];
+    const yourlink = baselink + "?key=" + VAULT.getPub();
     $('#mypubkey')[0].value = yourlink;
     $('#mypubkey')[0].size = yourlink.length;
 
+    // Buttons!
     $('select').click(() => {
         if($('select')[0].value !== '') {
             $('#encdec *').attr('disabled', false);
@@ -77,8 +79,27 @@ $(document).ready(() => {
     $('#encdec *').attr('disabled', true);
     $('#encrypt').click(encrypt);
     $('#decrypt').click(decrypt);
+    $('#panic').click(() => {
+        const p = $('#panic');
+        if(p.hasClass('_3')) {
+            VAULT.panic();
+            location.href = baselink; // Refresh
+        } else if(p.hasClass('_2')) {
+            p.text('Last warning! Here we go!');
+            p.addClass('_3');
+        } else if(p.hasClass('_1')) {
+            p.text('There is no going back! Sure??');
+            p.addClass('_2');
+        } else {
+            p.text('Are you absolutely sure?');
+            p.addClass('_1');
+        }
+    });
+
+    // Time to list the secrets
     updateSecrets();
 
+    // Clipboard stuff
     new ClipboardJS('#copypub');
     new ClipboardJS('#copyresult');
 
