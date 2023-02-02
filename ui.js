@@ -68,6 +68,18 @@ function decrypt() {
     $('#output').text(dec);
 }
 
+function selectSecret(secret) {
+    let i = 0;
+    for(const entry of VAULT.getSecrets()) {
+        if(entry[1] === secret) {
+            $('select').children()[i].selected = true;
+            $('select').click();
+            break;
+        }
+        ++i;
+    }
+}
+
 $(document).ready(() => {
     // Generate a key pair if it's not there.
     if(!VAULT.hasKeypair()) {
@@ -94,4 +106,33 @@ $(document).ready(() => {
 
     // I hate this in every possible aspect.
     $('#uglyresize').width($('#input').width() - $('#copyresult').width())
+
+    // Alice's key in URL?
+    const query = window.location.search;
+    const params = new URLSearchParams(query);
+    const alice = params.get('alice');
+    const alicekey = params.get('key');
+    if(alice !== null && alicekey !== null) {
+        if(/^\w+$/.test(alice) && /^[0-9a-fA-F]+$/.test(alicekey)) {
+            // Is alicekey already there?
+            const secret = CRYPTO.KEX.derive(alicekey);
+            if(VAULT.hasSecret(secret)) {
+                // Already there, just select it
+                selectSecret(secret);
+            } else {
+                // New secret!
+                $('#fromlink').css("display", "block");
+                $('#alicename').text(alice);
+                console.log(secret);
+
+                $('#addalice').click(() => {
+                    VAULT.save(alice, secret);
+                    updateSecrets();
+                    $('#fromlink').css("display", "none");
+                    // And select it too
+                    selectSecret(secret);
+                });
+            }
+        }
+    }
 });

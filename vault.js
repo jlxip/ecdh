@@ -27,6 +27,15 @@ var VAULT = {
     exists: function(name) {
         return this.get(name) !== null;
     },
+    hasSecret: function(secret) {
+        for(const n of Object.keys(localStorage)) {
+            if(localStorage.getItem(n) === secret) {
+                return true;
+            }
+        }
+
+        return false;
+    },
     save: function(name, secret) {
         localStorage.setItem('S'+name, secret);
     },

@@ -10,3 +10,14 @@ textarea {
 select {
     width: 100%;
 }
+
+#fromlinkbg {
+    font-weight: bold;
+    border-radius: 8px;
+    padding: 16px;
+    background-color: #f2acec;
+}
+
+#alicename {
+    font-style: italic;
+}
