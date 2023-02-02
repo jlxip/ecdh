@@ -73,17 +73,19 @@
         <hr>
 
         <h2 class="ml-3">Your public key</h2>
-        <div class="ml-3">
+        <div class="m-3">
             <p>
                 In order to begin the key exchange, the parties must share their public keys with each other.<br>
                 Yours, the one below, was generated the first time you loaded this page, and it's stored in your browser local storage; it won't be lost if you close the window or reboot your computer.
             </p>
 
             <input id="mypubkey" class="text-monospace" readonly size="10">
-            <br>
-            <button id="copypub" data-clipboard-target="#mypubkey" class="btn btn-success">
-                Copy to clipboard
-            </button>
+
+            <div class="mt-2">
+                <button id="copypub" data-clipboard-target="#mypubkey" class="btn btn-success">
+                    Copy to clipboard
+                </button>
+            </div>
         </div>
 
         <hr>
