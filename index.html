@@ -35,7 +35,8 @@
                 Alice does not trust the channel you're currently chatting on.
                 WhatsApp, Telegram, Facebook, Tinder, Instagram, Twitter: the companies that own
                 these chats are able to, at any point, intercept the messages that are sent back
-                and forth in the chat. This doesn't mean that they're doing it right now, but
+                and forth.<br>
+                This doesn't mean that they're doing it right now, but
                 Alice feels like the subject she wants to talk to you is private enough so the
                 information cannot be known by a third party.<br><br>
 
@@ -44,21 +45,24 @@
                 it is assumed that no tampering takes place.<br><br>
 
                 To begin, a key exchange has to take place. Alice generates a key,
-                and so does Bob. Both share their keys on the channel and
-                copy/paste them in the field below. Once that's done, Alice and Bob can derive
-                a shared key with which they can encrypt and decrypt messages which can be safely
-                sent throught the unsecure channel.<br><br>
+                and so does Bob. Both share their keys in form of links to this page
+                on the channel, and click each other's.<br>
+                Once that's done, Alice and Bob derive a shared key with which they
+                can encrypt and decrypt messages that can be safely
+                sent throught the unsecure channel.<br>
 
                 <div id="fromlink" style="display: none;">
                     <div id="fromlinkbg">
-                        It's your lucky day. Alice, under the name <span id="alicename"></span>, has sent
-                        you a link which contains their key already. Only you need to send it.<br>
-                        <button id="addalice" class="btn btn-primary">
+                        It's your lucky day. Alice has sent you a link which contains their key already.
+                        Only you need to send it now.<br>
+
+                        <input class="m-1" type="text" id="alice" placeholder="Enter Alice's name"><br>
+                        <button id="addalice" class="m-1 btn btn-primary">
                             Click here to add their key to your list
                         </button>
                     </div>
-                    <br><br>
-                </span>
+                    <br>
+                </div>
 
                 Please do keep in mind that this platform should not be used extensively for day
                 to day communication, only during brief chat sessions; for instance, to figure out
@@ -68,32 +72,18 @@
 
         <hr>
 
-        <h2 class="ml-3">Key Exchange</h2>
-        <div id="kex">
-            <div id="generation" class="ml-3">
-                <h3>Your public key</h3>
-                <p>
-                    In order to begin the key exchange, the parties must share their public keys with each other.<br>
-                    The one below was generated the first time you loaded this site, and it's stored in your browser local storage; it won't be lost if you close the window or reboot your computer.
-                </p>
+        <h2 class="ml-3">Your public key</h2>
+        <div class="ml-3">
+            <p>
+                In order to begin the key exchange, the parties must share their public keys with each other.<br>
+                Yours, the one below, was generated the first time you loaded this page, and it's stored in your browser local storage; it won't be lost if you close the window or reboot your computer.
+            </p>
 
-                <span id="mypubkey" class="text-monospace"></span>
-                <button id="copypub" data-clipboard-target="#mypubkey" class="btn btn-light">
-                    <!-- Stealing assets over here. -->
-                    <img src="https://clipboardjs.com/assets/images/clippy.svg" alt="Copy to clipboard" width="13">
-                </button>
-            </div>
-            <div id="reception" class="ml-3">
-                <h3>Key derivation</h3>
-                <p>Once you have shared your public key, paste the other party's below and give the resulting key a name, so you can identify the communication later.</p>
-                <div class="row m-2">
-                    <div>
-                        <input class="m-1" type="text" id="secretname" placeholder="Give it a name."><br>
-                        <input class="m-1" type="text" id="otherpubkey" placeholder="Public key goes here."><br>
-                        <button id="derive" class="m-1 btn btn-primary">Derive key</button>
-                    </div>
-                </div>
-            </div>
+            <input id="mypubkey" class="text-monospace" readonly size="10">
+            <br>
+            <button id="copypub" data-clipboard-target="#mypubkey" class="btn btn-success">
+                Copy to clipboard
+            </button>
         </div>
 
         <hr>
@@ -109,17 +99,19 @@
                     <select multiple class="mb-2"></select>
 
                     <div id="encdec">
-                        <textarea id="input" rows="6"></textarea>
+                        <textarea id="input" rows="6" placeholder="Write some text to encrypt, or paste an encrypted message"></textarea>
 
                         <div class="p-2 text-center">
                             <button id="encrypt" class="btn btn-primary">Encrypt</button>
                             <button id="decrypt" class="btn btn-primary">Decrypt</button>
                         </div>
 
-                        <textarea id="output" rows="6" readonly></textarea>
+                        <textarea id="output" rows="6" readonly placeholder="Output will appear here"></textarea>
 
                         <div class="text-center mt-1">
-                            <button id="copyresult" data-clipboard-target="#output" class="btn btn-success">Copy to clipboard</button>
+                            <button id="copyresult" data-clipboard-target="#output" class="btn btn-success">
+                                Copy to clipboard
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -137,7 +129,7 @@
         <h2 class="ml-3">For the savvy</h2>
         <div class="m-3">
             <p class="text-justify">
-                Please do check <a href="https://github.com/jlxip/ecdh">the code</a> to make sure nothing is sent over the wire. It's very short.<br>
+                This is a static site. Please do check <a href="https://github.com/jlxip/ecdh">the code</a> to make sure nothing is sent over the wire. It's very short.<br>
                 Key exchange is performed with ECDH on the curve curve25519, by djb. Advice taken from <a href="https://safecurves.cr.yp.to/index.html">safecurves</a>. Implementation uses <a href="https://github.com/indutny/elliptic">elliptic</a>.<br>
                 Symmetric encryption is performed with AES-256-GCM. IV (96 bits) is randomly generated and sent on each message. Implementation uses <a href="https://github.com/bitwiseshiftleft/sjcl">sjcl</a>.
             </p>

@@ -3,31 +3,6 @@
 // This file contains all the javascript that's not directly crypto or storage
 // That is, code that cannot go wrong
 
-function derive() {
-    const secretname = $('#secretname')[0].value;
-    const otherpubkey = $('#otherpubkey')[0].value;
-    if(!secretname.length) {
-        // TODO: Make the input red.
-        alert('You have to give the secret a name.');
-        return;
-    }
-    if(!otherpubkey.length) {
-        alert('You have not introduced a public key.');
-        return;
-    }
-
-    if(VAULT.exists(secretname)) {
-        alert('A secret named "'+secretname+'" already exists.');
-        return;
-    }
-
-    const secret = CRYPTO.KEX.derive(otherpubkey);
-    VAULT.save(secretname, secret);
-    updateSecrets();
-    $('#secretname')[0].value = '';
-    $('#otherpubkey')[0].value = '';
-}
-
 function updateSecrets() {
     const sel = $('select');
     sel.html('');
@@ -88,9 +63,12 @@ $(document).ready(() => {
     } else {
         CRYPTO.KEX.restoreKey(VAULT.getPriv());
     }
-    $('#mypubkey').text(VAULT.getPub());
 
-    $('#derive').click(derive);
+    const yourlink = window.location.href.split('?')[0] +
+          "?key="+VAULT.getPub();
+    $('#mypubkey')[0].value = yourlink;
+    $('#mypubkey')[0].size = yourlink.length;
+
     $('select').click(() => {
         if($('select')[0].value !== '') {
             $('#encdec *').attr('disabled', false);
@@ -104,16 +82,12 @@ $(document).ready(() => {
     new ClipboardJS('#copypub');
     new ClipboardJS('#copyresult');
 
-    // I hate this in every possible aspect.
-    $('#uglyresize').width($('#input').width() - $('#copyresult').width())
-
     // Alice's key in URL?
     const query = window.location.search;
     const params = new URLSearchParams(query);
-    const alice = params.get('alice');
     const alicekey = params.get('key');
-    if(alice !== null && alicekey !== null) {
-        if(/^\w+$/.test(alice) && /^[0-9a-fA-F]+$/.test(alicekey)) {
+    if(alicekey !== null) {
+        if(/^[0-9a-fA-F]+$/.test(alicekey)) {
             // Is alicekey already there?
             const secret = CRYPTO.KEX.derive(alicekey);
             if(VAULT.hasSecret(secret)) {
@@ -126,6 +100,15 @@ $(document).ready(() => {
                 console.log(secret);
 
                 $('#addalice').click(() => {
+                    const alice = $('#alice')[0].value;
+                    if(!alice.length) {
+                        alert('You have to give this shared secret a name');
+                        return;
+                    } else if(VAULT.exists(alice)) {
+                        alert('A secret named "'+alice+'" already exists');
+                        return;
+                    }
+
                     VAULT.save(alice, secret);
                     updateSecrets();
                     $('#fromlink').css("display", "none");
