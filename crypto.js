@@ -14,7 +14,7 @@ var CRYPTO = {
         // Generate a brand new ECDH keypair
         genKeyPair: function () {
             this._key = this._ec.genKeyPair();
-            return this._key.getPublic('hex'), this._key.getPrivate('hex');
+            return [this._key.getPublic('hex'), this._key.getPrivate('hex')];
         },
         // Restore an existing ECDH keypair
         restoreKey: function (priv) {

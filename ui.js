@@ -58,8 +58,8 @@ function selectSecret(secret) {
 $(document).ready(() => {
     // Generate a key pair if it's not there.
     if(!VAULT.hasKeypair()) {
-        let pub, priv = CRYPTO.KEX.genKeyPair();
-        VAULT.saveMyKeys(pub, priv);
+        let keypair = CRYPTO.KEX.genKeyPair();
+        VAULT.saveMyKeys(keypair[0], keypair[1]);
     } else {
         CRYPTO.KEX.restoreKey(VAULT.getPriv());
     }
