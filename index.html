@@ -12,6 +12,7 @@
               crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/gh/indutny/elliptic/dist/elliptic.min.js"></script>
         <script src="crypto.js"></script>
+        <script src="vault.js"></script>
         <script src="ui.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/sjcl/1.0.8/sjcl.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js"></script>
@@ -28,7 +29,7 @@
         <div class="m-3">
             <p class="text-justify">
                 Congratulations, you have arrived at Simple ECDH.
-                You're here because the person who sent you this link (let's call her Alice)
+                You're here because the person who sent you this link (let's call them Alice)
                 wants to communicate securely with you (Bob).<br><br>
 
                 Alice does not trust the channel you're currently chatting on.
@@ -42,8 +43,8 @@
                 This applies to channels such as the listed above, where snooping is likely, but
                 it is assumed that no tampering takes place.<br><br>
 
-                To begin, a key exchange has to take place. Alice (the other party) generates a key,
-                and Bob (you) does the same. Both share their keys on the channel and
+                To begin, a key exchange has to take place. Alice generates a key,
+                and so does Bob. Both share their keys on the channel and
                 copy/paste them in the field below. Once that's done, Alice and Bob can derive
                 a shared key with which they can encrypt and decrypt messages which can be safely
                 sent throught the unsecure channel.<br><br>

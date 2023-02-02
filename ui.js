@@ -1,8 +1,7 @@
 "use strict";
 
-// This file contains all the javascript that's not directly crypto
+// This file contains all the javascript that's not directly crypto or storage
 // That is, code that cannot go wrong
-// This includes handling the local storage
 
 function derive() {
     const secretname = $('#secretname')[0].value;
@@ -17,13 +16,13 @@ function derive() {
         return;
     }
 
-    if(localStorage.getItem('S'+secretname)) {
+    if(VAULT.exists(secretname)) {
         alert('A secret named "'+secretname+'" already exists.');
         return;
     }
 
     const secret = CRYPTO.KEX.derive(otherpubkey);
-    localStorage.setItem('S'+secretname, secret);
+    VAULT.save(secretname, secret);
     updateSecrets();
     $('#secretname')[0].value = '';
     $('#otherpubkey')[0].value = '';
@@ -34,20 +33,14 @@ function updateSecrets() {
     sel.html('');
     sel[0].disabled = false;
 
-    var any = false;
-    const names = Object.keys(localStorage).sort();
-    for(const n of names) {
-        if(n[0] == 'S') {
-            any = true;
-
-            const name = n.substr(1);
-            const newitem = $('<option>');
-            newitem.text(name);
-            sel.append(newitem);
-        }
+    const secrets = VAULT.getSecrets();
+    for(const entry of secrets) {
+        const newitem = $('<option>');
+        newitem.text(entry[0]);
+        sel.append(newitem);
     }
 
-    if(!any) {
+    if(secrets.length === 0) {
         sel.append($('<option>No keys yet.</option>'));
         sel[0].disabled = true;
     }
@@ -55,7 +48,7 @@ function updateSecrets() {
 
 function getAES() {
     const name = $('select')[0].value;
-    const hex = localStorage.getItem('S'+name);
+    const hex = VAULT.get(name);
     if(!hex)
         throw new Error('Something went awfully wrong.');
     return CRYPTO.AE.getAES(hex);
@@ -77,14 +70,13 @@ function decrypt() {
 
 $(document).ready(() => {
     // Generate a key pair if it's not there.
-    if(!localStorage.getItem('pub')) {
+    if(!VAULT.hasKeypair()) {
         let pub, priv = CRYPTO.KEX.genKeyPair();
-        localStorage.setItem('pub', pub);
-        localStorage.setItem('priv', priv);
+        VAULT.saveMyKeys(pub, priv);
     } else {
-        CRYPTO.KEX.restoreKey(localStorage.getItem('priv'));
+        CRYPTO.KEX.restoreKey(VAULT.getPriv());
     }
-    $('#mypubkey').text(localStorage.getItem('pub'));
+    $('#mypubkey').text(VAULT.getPub());
 
     $('#derive').click(derive);
     $('select').click(() => {
