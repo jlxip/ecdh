@@ -97,7 +97,6 @@ $(document).ready(() => {
                 // New secret!
                 $('#fromlink').css("display", "block");
                 $('#alicename').text(alice);
-                console.log(secret);
 
                 $('#addalice').click(() => {
                     const alice = $('#alice')[0].value;
