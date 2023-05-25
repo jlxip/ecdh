@@ -61,6 +61,7 @@ var CRYPTO = {
             let both;
             try {
                 both = sjcl.codec.base64.toBits(encoded);
+                // That's an array of *words*
             } catch(e) {
                 alert('Input is not base64');
                 throw new Error('Input is not base64');
