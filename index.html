@@ -136,9 +136,11 @@
         <h2 class="ml-3">For the savvy</h2>
         <div class="m-3">
             <p class="text-justify">
-                This is a static site. Please do check <a href="https://github.com/jlxip/ecdh">the code</a> to make sure nothing is sent over the wire. It's very short.<br>
-                Key exchange is performed with ECDH on the curve curve25519, by djb. Advice taken from <a href="https://safecurves.cr.yp.to/index.html">safecurves</a>. Implementation uses <a href="https://github.com/indutny/elliptic">elliptic</a>.<br>
-                Symmetric encryption is performed with AES-256-GCM. IV (96 bits) is randomly generated and sent on each message. Implementation uses <a href="https://github.com/bitwiseshiftleft/sjcl">sjcl</a>.
+                <ul>
+                    <li>This is a static site. Please do check <a href="https://github.com/jlxip/ecdh">the code</a> to make sure nothing is sent over the wire. It's very short.</li>
+                    <li>Key exchange is performed with ECDH on the curve curve25519, by djb. Advice taken from <a href="https://safecurves.cr.yp.to/index.html">safecurves</a>. Implementation uses <a href="https://github.com/indutny/elliptic">elliptic</a>.</li>
+                    <li>Key is derived using HKDF. Symmetric encryption is performed with AES-256-GCM. IV (96 bits) is randomly generated and sent on each message. These algorithms come from <a href="https://github.com/bitwiseshiftleft/sjcl">sjcl</a>.</li>
+                </ul>
             </p>
         </div>
 
