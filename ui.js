@@ -56,6 +56,13 @@ function selectSecret(secret) {
 }
 
 $(document).ready(() => {
+    // Disable noob mode by default
+    $('.noob').each((_, i) => { i.style = 'display: none;'; });
+    $('#gonoob').click(() => {
+        $('.noob').each((_, i) => { i.style = ''; });
+        $('.pro').each((_, i) => { i.style = 'display: none;'; });
+    });
+
     // Generate a key pair if it's not there.
     if(!VAULT.hasKeypair()) {
         let keypair = CRYPTO.KEX.genKeyPair();

@@ -1,5 +1,13 @@
 <!DOCTYPE HTML>
 
+<!--
+    TODO:
+    - Argon2 master key
+    - Zeroize
+    - Backup
+    - Better entropy
+-->
+
 <HTML>
     <head>
         <meta charset="UTF-8">
@@ -25,8 +33,8 @@
 
         <hr>
 
-        <h2 class="ml-3">Introduction</h2>
-        <div class="m-3">
+        <h2 class="ml-3 noob">Introduction</h2>
+        <div class="m-3 noob">
             <p class="text-justify">
                 Congratulations, you have arrived at Simple ECDH.
                 You're here because the person who sent you this link (let's call them Alice)
@@ -51,30 +59,41 @@
                 can encrypt and decrypt messages that can be safely
                 sent throught the unsecure channel.<br>
 
-                <div id="fromlink" style="display: none;">
-                    <div id="fromlinkbg">
-                        It's your lucky day. Alice has sent you a link which contains their key already.
-                        Only you need to send it now.<br>
-
-                        <input class="m-1" type="text" id="alice" placeholder="Enter Alice's name"><br>
-                        <button id="addalice" class="m-1 btn btn-primary">
-                            Click here to add their key to your list
-                        </button>
-                    </div>
-                    <br>
-                </div>
-
                 Please do keep in mind that this platform should not be used extensively for day
                 to day communication, only during brief chat sessions; for instance, to figure out
                 a more secure place to talk.
             </p>
         </div>
 
+        <div class="pro m-3">
+            <button id="gonoob" class="m-1 btn btn-primary">
+                What's this? (Enable noob mode)
+            </button>
+        </div>
+
+        <div id="fromlink" class="m-3" style="display: none;">
+            <div id="fromlinkbg">
+                <div class="noob">
+                    It's your lucky day. Alice has sent you a link which contains their key already.
+                    Only you need to send it now.<br>
+                </div>
+                <div class="pro">
+                    You have received a key in this URL.
+                </div>
+
+                <input class="m-1" type="text" id="alice" placeholder="Session name"><br>
+                <button id="addalice" class="m-1 btn btn-primary">
+                    Finish exchange
+                </button>
+            </div>
+            <br>
+        </div>
+
         <hr>
 
         <h2 class="ml-3">Your public key</h2>
         <div class="m-3">
-            <p>
+            <p class="noob" style="display: none;">
                 In order to begin the key exchange, the parties must share their public keys with each other.<br>
                 Yours, the one below, was generated the first time you loaded this page, and it's stored in your browser local storage; it won't be lost if you close the window or reboot your computer.
             </p>
@@ -93,7 +112,7 @@
         <h2 class="ml-3">Encryption/Decryption</h2>
         <div class="ml-3">
             <p>
-                Select the key from the list and you can start encrypting and decrypting messages.
+                Select the key from the list.
             </p>
 
             <div id="outencdec" class="text-center">
@@ -137,9 +156,9 @@
         <div class="m-3">
             <p class="text-justify">
                 <ul>
-                    <li>This is a static site. Please do check <a href="https://github.com/jlxip/ecdh">the code</a> to make sure nothing is sent over the wire. It's very short.</li>
-                    <li>Key exchange is performed with ECDH on the curve curve25519, by djb. Advice taken from <a href="https://safecurves.cr.yp.to/index.html">safecurves</a>. Implementation uses <a href="https://github.com/indutny/elliptic">elliptic</a>.</li>
-                    <li>Key is derived using HKDF. Symmetric encryption is performed with AES-256-GCM. IV (96 bits) is randomly generated and sent on each message. These algorithms come from <a href="https://github.com/bitwiseshiftleft/sjcl">sjcl</a>.</li>
+                    <li>This is a static site that runs locally in your browser. <a href="https://github.com/jlxip/ecdh">Proof</a></li>
+                    <li>X25519 + HKDF-HMAC-SHA2-256 + AES-GCM-256</li>
+                    <li><a href="https://github.com/indutny/elliptic">elliptic</a>, <a href="https://github.com/bitwiseshiftleft/sjcl">sjcl</a></li>
                 </ul>
             </p>
         </div>
